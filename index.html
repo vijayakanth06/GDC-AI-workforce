@@ -5,20 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration Form</title>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
+       
     </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -55,59 +44,9 @@
         </tr>
     </thead>
     <tbody>
-        <!-- Table rows will be added here -->
     </tbody>
 </table>
-
-<script>
-    function loadEntries() {
-        const entries = JSON.parse(localStorage.getItem('entries')) || [];
-        const tableBody = document.querySelector('table tbody');
-        tableBody.innerHTML = '';
-        
-        entries.forEach(entry => {
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td>${entry.name}</td>
-                <td>${entry.email}</td>
-                <td>${entry.password}</td>
-                <td>${entry.dob}</td>
-                <td>${entry.acceptedTerms}</td>
-            `;
-            tableBody.appendChild(newRow);
-        });
-    }
-
-    document.getElementById('registrationForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const dob = document.getElementById('dob').value;
-        const acceptedTerms = document.getElementById('acceptedTerms').checked;
-
-        // Age validation
-        const age = new Date().getFullYear() - new Date(dob).getFullYear();
-        if (age < 18 || age > 55) {
-            alert('You must be between 18 and 55 years old.');
-            return;
-        }
-
-        const entries = JSON.parse(localStorage.getItem('entries')) || [];
-        entries.push({ name, email, password, dob, acceptedTerms });
-        localStorage.setItem('entries', JSON.stringify(entries));
-
-        // Reset the form
-        this.reset();
-
-        // Reload entries to display the updated table
-        loadEntries();
-    });
-
-    // Load entries on page load
-    window.onload = loadEntries;
-</script>
+<script src="index.js"></script>
 
 </body>
 </html>

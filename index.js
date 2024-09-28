@@ -1,3 +1,21 @@
+function loadEntries() {
+    const entries = JSON.parse(localStorage.getItem('entries')) || [];
+    const tableBody = document.querySelector('table tbody');
+    tableBody.innerHTML = '';
+    
+    entries.forEach(entry => {
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>${entry.name}</td>
+            <td>${entry.email}</td>
+            <td>${entry.password}</td>
+            <td>${entry.dob}</td>
+            <td>${entry.acceptedTerms}</td>
+        `;
+        tableBody.appendChild(newRow);
+    });
+}
+
 document.getElementById('registrationForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -5,16 +23,17 @@ document.getElementById('registrationForm').addEventListener('submit', function(
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const dob = document.getElementById('dob').value;
-    const terms = document.getElementById('terms').checked;
+    const acceptedTerms = document.getElementById('acceptedTerms').checked;
+    const age = new Date().getFullYear() - new Date(dob).getFullYear();
+    if (age < 18 || age > 55) {
+        alert('You must be between 18 and 55 years old.');
+        return;
+    }
 
-    const table = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
-    const newRow = table.insertRow();
-
-    newRow.insertCell(0).textContent = name;
-    newRow.insertCell(1).textContent = email;
-    newRow.insertCell(2).textContent = password;
-    newRow.insertCell(3).textContent = dob;
-    newRow.insertCell(4).textContent = terms;
-
-    document.getElementById('registrationForm').reset();
+    const entries = JSON.parse(localStorage.getItem('entries')) || [];
+    entries.push({ name, email, password, dob, acceptedTerms });
+    localStorage.setItem('entries', JSON.stringify(entries));
+    this.reset();
+    loadEntries();
 });
+window.onload = loadEntries;
